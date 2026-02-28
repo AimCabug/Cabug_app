@@ -5,11 +5,15 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Http\Request;
 use App\Services\UserService;
+use App\Http\Controllers\ProductController;
+use App\Services\ProductService;
 
 // Home Route
 Route::get('/', function () {
-    return 'hello woorldoooo';
-    // return view('dashboard/index');
+    // return 'hello woorldoooo';
+    return view('welcome', [
+        'name' => 'Cabug_app'
+    ]);
 });
 
 // Service Controller
@@ -81,4 +85,26 @@ Route::get('token', function() {
 
 Route::post('/token', function(Request $request) {
    return $request -> all();
+});
+
+// CONTROLLER
+
+// MIDDLEWARE
+
+Route::get('/users', [UserController::class, 'index']
+) -> middleware('user-middleware');
+
+
+use App\Services\TaskService;
+
+// RESOURCE
+Route::resource('products', ProductController::class);
+
+Route::get('/product-list', function (ProductService $productService, TaskService $taskService) {
+    $taskService->add('Add to Cart');
+    $taskService->add('Checkout');
+
+    $data['products'] = $productService->getList();
+    $data['tasks'] = $taskService->getAllTasks();
+    return view('product.list', $data);
 });
