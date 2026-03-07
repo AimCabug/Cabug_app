@@ -28,5 +28,11 @@
                 </div>
             </div>
         </div>
+        <x-layout>
+            <x-slot:heading>
+                <p>Welcom to {{ $name }}</p>
+            </x-slot:heading>
+        </x-layout>
+
     </body>
 </html>
